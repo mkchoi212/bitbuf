@@ -102,6 +102,13 @@ static inline void bitbuf_swap( bitbuf *a, bitbuf *b ) {
  */
 
 /**
+ * Ensure that a provided amount of memery is available.
+ * Typically used when the size of the data is known before-hand
+ * and wish to repetitive realloc()s for performance
+ */
+extern void bitbuf_grow( bitbuf *, size_t );
+
+/**
  * Determine amount of allocated but unused memory
  */
 static inline size_t bitbuf_avail( bitbuf *b ) {
@@ -142,11 +149,36 @@ static inline size_t bitbuf_weight( bitbuf *b ) {
 }
 
 /**
- * Ensure that a provided amount of memery is available.
- * Typically used when the size of the data is known before-hand
- * and wish to repetitive realloc()s for performance
+ * Locate a bit needle in the  bit haystack starting from the provided offset
+ * Set garble value for permitted bit error count
+ * Return -1 if nothing is found
  */
-extern void bitbuf_grow( bitbuf *, size_t );
+extern int bitbuf_fpat( bitbuf *src, bitbuf *pat, size_t garble, size_t offset );
+
+/**
+ * Compare two buffers
+ * Returns zero if two buffers are identical, otherwise returns the difference
+ * between the first two differing bytes
+ */
+extern int bitbuf_cmp( bitbuf *, bitbuf * );
+
+/**
+ * Slice n elements of the src buffer and store in dest buffer
+ * starting from the provided index
+ */
+extern void bitbuf_slice( bitbuf *dest, bitbuf *src, size_t start, size_t n );
+
+/**
+ * Align two buffers by padding the shorter buffer with zeros
+ */
+extern void bitbuf_align( bitbuf *, bitbuf * );
+
+/**
+ * Get / set a signle bit at a specific zero-indexed bit position
+ */
+extern unsigned char bitbuf_getbit( const bitbuf *, size_t );
+extern void bitbuf_setbit( bitbuf *, int, size_t );
+
 
 static void panic( const char *fmt, ... ) {
     va_list ap;
