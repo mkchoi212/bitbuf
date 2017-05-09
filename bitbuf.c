@@ -97,3 +97,47 @@ void bitbuf_grow( bitbuf *bb, size_t extra ) {
         bb->alloc = new * 8;
     }
 }
+
+int bitbuf_cmp( bitbuf *a, bitbuf *b ) {
+    size_t clen = a->len > b->len ? b->len : a->len;
+    return memcmp( a->buf, b->buf, BYTE_LEN( clen ) );
+}
+
+int bitbuf_fpat( bitbuf *src, bitbuf *pat, size_t garble, size_t offset ) {
+
+    if( pat->len > src->len - offset )
+        return -1;
+
+    int hit = -1;
+    size_t i, cursor, winSz, patSz, weight;
+    patSz = BYTE_LEN( pat->len );
+    winSz = patSz + 1;  // one byte larger to compensate for overflow during slicing
+
+    unsigned char temp[ winSz ];
+    memset( temp, 0, winSz );
+
+    bitbuf window = BITBUF_INIT;
+    bitbuf_attach( &window, temp, winSz );
+
+    for( cursor = offset; cursor <= src->len - pat->len; ++cursor ) {
+        
+        weight = 0;
+        bitbuf_slice( &window, src, cursor, pat->len );
+
+        for( i = 0; i < patSz; ++i ) {
+            weight += __builtin_popcount( window.buf[ i ] );
+
+            if( weight > garble ) {
+                bitbuf_resetlen( &window );
+                break;
+            }
+        }
+
+        if( i == patSz ) {
+            hit = cursor;
+            break;
+        }
+    }
+
+    return hit;
+}
