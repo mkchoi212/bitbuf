@@ -141,3 +141,24 @@ int bitbuf_fpat( bitbuf *src, bitbuf *pat, size_t garble, size_t offset ) {
 
     return hit;
 }
+
+void bitbuf_slice( bitbuf *dest, bitbuf *src, size_t start, size_t n ) {
+
+    if( start + n > src->len ) 
+        die( "slice: Out of bounds" );
+
+    size_t width = BYTE_LEN( n + ( start % 8 ) ) * 8;
+    if( width > dest->alloc )
+        bitbuf_grow( dest, width - dest->alloc );
+
+    memcpy( dest->buf, &src->buf[ start / 8 ], width / 8 );
+    dest->len = width;
+
+    /* Clean trash bits at the LSB */
+    bitbuf_lsh( dest, start % 8 );
+
+    /* Clean trash bits at the MSB */
+    size_t trashShift = 8 - ( n % 8 );
+    dest->buf[ n / 8 ] = dest->buf[ n / 8 ] >> trashShift << trashShift;
+}
+
