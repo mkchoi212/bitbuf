@@ -75,19 +75,18 @@ extern void bitbuf_reset( bitbuf * );
 extern void bitbuf_release( bitbuf * );
 
 /**
- * Attach a byte array to the structure. Provide the array to be attached,
- * its length and the amount of malloc()ed memory.
+ * Attach a byte array to the structure.
  * The array __must__ have been malloc()ed before being attached and can't
  * be free()ed directly
  */
-extern void bitbuf_attach( bitbuf *, void *buf, size_t len, size_t alloc );
+extern void bitbuf_attach( bitbuf *, void *buf, size_t size );
 
 /**
  * Detach the buffer from the structure and return it while getting its size/
  * You now own the bit array and its your responsibility to __release__ it
  * with free()
  */
-extern unsigned char * bitbuf_detach( bitbuf *, size_t );
+extern unsigned char * bitbuf_detach( bitbuf *, size_t * );
 
 /**
  * Basic operations
