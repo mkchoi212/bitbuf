@@ -177,8 +177,138 @@ extern void bitbuf_align( bitbuf *, bitbuf * );
  * Get / set a signle bit at a specific zero-indexed bit position
  */
 extern unsigned char bitbuf_getbit( const bitbuf *, size_t );
-extern void bitbuf_setbit( bitbuf *, int, size_t );
 
+extern void bitbuf_setbit( bitbuf *b, int bit, size_t idx );
+
+/**
+ * Adding data
+ * ____________________________________________
+ * __NOTE__ that functions here will grow the buffer as needed
+ * If it fails other than lack of memory, it will be free()ed
+ */
+
+/**
+ * Add a single bit / byte to the end of the buffer
+ */
+extern void bitbuf_addbit( bitbuf *, int );
+
+extern void bitbuf_addbyte( bitbuf *, unsigned char );
+
+/**
+ * Append contents of src buffer to the dest buffer
+ */
+extern void bitbuf_append_buf( bitbuf *dest, bitbuf *src );
+
+/**
+ * I/O Functions
+ * ____________________________________________
+ */
+
+/**
+ * Print the buffer to stdout
+ * Useful for inspecting the buffer while debugging
+ *
+ * Format: 0xDATA 0bLEFT_OVER_BITS
+ */
+extern void bitbuf_dump( bitbuf * );
+
+/**
+ * Read file and store all data in buffer and return number of bits read
+ */
+extern size_t bitbuf_read_file( bitbuf *, FILE * );
+
+/**
+ * Write buffer to file and return number of bits written
+ * Returns value less than `len` only if a write error occured
+ */
+extern size_t bitbuf_write_file( bitbuf *, FILE * );
+
+/**
+ * Modifying the buffer
+ * ____________________________________________
+ */
+
+/**
+ * Reverse n number of bits at the provided index __in place__
+ */
+extern void bitbuf_reverse( bitbuf *, size_t start, size_t n );
+
+/**
+ * Reverse all bits in the buffer by n bits __in place__
+ */
+extern void bitbuf_reverse_all( bitbuf *, size_t n );
+
+/**
+ * Left / right shift
+ */
+extern void bitbuf_lsh( bitbuf *, size_t );
+
+extern void bitbuf_rsh( bitbuf *, size_t );
+
+/**
+ * Apply `OperationFunc` to two buffers and store the result in `res`
+ */
+extern void bitbuf_op( bitbuf *, bitbuf *, bitbuf *res, OperatorFunc op );
+
+/**
+ * Operations built on top of `bitbuf_op()`
+ *
+ * Addition | And | Or | Xor 
+ */
+extern void bitbuf_plus( bitbuf *, bitbuf *, bitbuf *res );
+extern void bitbuf_and( bitbuf *, bitbuf *, bitbuf *res );
+extern void bitbuf_or( bitbuf *, bitbuf *, bitbuf *res );
+extern void bitbuf_xor( bitbuf *, bitbuf *, bitbuf *res );
+
+/**
+ * String to bitbuf
+ * ____________________________________________
+ */
+
+/**
+ * Convert string input to bitbuf
+ * Provided base must be between 2 and 36 inclusive
+ *
+ * `dataSize` is the number of bits a single character of data signifies
+ */
+
+extern void bitbuf_append_str( bitbuf *, const char *, size_t base, size_t dataSize );
+
+static inline void bitbuf_add_str_hex( bitbuf *b, const char *hexStr ) { 
+    /* `base` is 16 for hexadecimal data
+     * `dataSize` is 4 as one character of hex (nibble) is 4 bits
+     */
+
+    size_t i, c;
+    for( i = 0; i < strlen( hexStr ); ++i ) {
+        c = hexStr[ i ];
+
+        if( !( ( c>=48 && c<=57 ) || ( c>=97 && c<=102 ) || ( c>=65 && c<=70 ) ) )
+            panic( "Non-hexadecimal digit %c found at position %i", c, i );
+    }
+    bitbuf_append_str( b, hexStr, 16, 4 );
+}
+
+static inline void bitbuf_add_str_bin( bitbuf *b, const char *binStr ) { 
+    size_t i, c;
+    for( i = 0; i < strlen( binStr ); ++i ) {
+        c = binStr[ i ];
+
+        if( !( c == 48 || c == 49 ) )
+            panic( "Non-binary digit %c found at position %i", c, i );
+    }
+    bitbuf_append_str( b, binStr, 2, 1 );
+}
+
+/**
+ * Bitbuf to string
+ * ____________________________________________
+ * __NOTE__ Make sure big enough character buffers are provided to the following functions
+ */
+
+extern void bitbuf_bin( bitbuf *, char * );
+extern void bitbuf_hex( bitbuf *, char * );
+extern void bitbuf_ascii( bitbuf *, char * );
 
 static void panic( const char *fmt, ... ) {
     va_list ap;
