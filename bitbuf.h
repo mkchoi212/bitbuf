@@ -2,8 +2,10 @@
 #define BITBUF_H
 
 #include <stdlib.h>
-#include <errno.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
 
 typedef struct _bitbuf {
 
@@ -14,6 +16,16 @@ typedef struct _bitbuf {
 
 #define BITBUF_INIT { 0, 0, bitbuf_slopbuf }
 #define BYTE_LEN( n ) ( n + 7 ) / 8
+
+static void die( const char *fmt, ... ) {
+    va_list ap;
+    va_start( ap, fmt );
+    fprintf( stderr, fmt, ap );
+    fprintf( stderr, "\n" );
+    va_end( ap );
+    exit( EXIT_FAILURE );
+}
+
 
 /**
  * Used as desfualt ->buf value to ensure
@@ -93,7 +105,7 @@ extern void bitbuf_copy( bitbuf *dest, bitbuf *src );
 static inline void bitbuf_swap( bitbuf *a, bitbuf *b ) {
     bitbuf *tmp = a;
     *a = *b;
-    *b = *temp;
+    *b = *tmp;
 }
 
 /**
@@ -111,7 +123,7 @@ extern void bitbuf_grow( bitbuf *, size_t );
 /**
  * Determine amount of allocated but unused memory
  */
-static inline size_t bitbuf_avail( bitbuf *b ) {
+static inline size_t bitbuf_avail( bitbuf *bb ) {
     return bb->alloc > bb->len ? bb->alloc - bb->len : 0;
 }
 
@@ -124,7 +136,7 @@ static inline size_t bitbuf_avail( bitbuf *b ) {
  */
 static inline void bitbuf_setlen( bitbuf *b, size_t len ) {
     if( len > ( b->alloc ? b->alloc : 0 ) )
-        panic( "bitbuf_setlen() beyond buffer" );
+        die( "bitbuf_setlen() beyond buffer" );
 
     b->len = len;
 }
@@ -284,7 +296,7 @@ static inline void bitbuf_add_str_hex( bitbuf *b, const char *hexStr ) {
         c = hexStr[ i ];
 
         if( !( ( c>=48 && c<=57 ) || ( c>=97 && c<=102 ) || ( c>=65 && c<=70 ) ) )
-            panic( "Non-hexadecimal digit %c found at position %i", c, i );
+            die( "Non-hexadecimal digit %c found at position %i", c, i );
     }
     bitbuf_append_str( b, hexStr, 16, 4 );
 }
@@ -295,7 +307,7 @@ static inline void bitbuf_add_str_bin( bitbuf *b, const char *binStr ) {
         c = binStr[ i ];
 
         if( !( c == 48 || c == 49 ) )
-            panic( "Non-binary digit %c found at position %i", c, i );
+            die( "Non-binary digit %c found at position %i", c, i );
     }
     bitbuf_append_str( b, binStr, 2, 1 );
 }
@@ -310,11 +322,4 @@ extern void bitbuf_bin( bitbuf *, char * );
 extern void bitbuf_hex( bitbuf *, char * );
 extern void bitbuf_ascii( bitbuf *, char * );
 
-static void panic( const char *fmt, ... ) {
-    va_list ap;
-    va_start( ap, fmt );
-    fprintf( stderr, fmt, ap );
-    fprintf( stderr, "\n" );
-    va_end( ap );
-    exit( EXIT_FAILURE );
-}
+#endif
