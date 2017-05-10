@@ -162,3 +162,28 @@ void bitbuf_slice( bitbuf *dest, bitbuf *src, size_t start, size_t n ) {
     dest->buf[ n / 8 ] = dest->buf[ n / 8 ] >> trashShift << trashShift;
 }
 
+unsigned char bitbuf_getbit( const bitbuf *bb, size_t n ) {
+
+    if( n > bb->len )
+        die( "getbit: Out of bounds" );
+
+    size_t byteLoc = n / 8;
+    size_t bitLoc  = 7 - ( n % 8 );
+    return getbit( bb->buf[ byteLoc ], bitLoc );
+}
+
+void bitbuf_setbit( bitbuf *bb, size_t n, int bit ) {
+    if( n > bb->len )
+        die( "setbit: Out of bounds" );
+
+    size_t byteLoc = n / 8;
+    size_t bitLoc  = 7 - ( n % 8 );
+
+    if( bit )
+        bb->buf[ byteLoc ] |= 0x1;
+    else
+        bb->buf[ byteLoc ] &= 0x0;
+
+
+     
+}

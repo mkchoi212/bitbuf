@@ -189,7 +189,7 @@ extern void bitbuf_align( bitbuf *, bitbuf * );
  */
 extern unsigned char bitbuf_getbit( const bitbuf *, size_t );
 
-extern void bitbuf_setbit( bitbuf *b, int bit, size_t idx );
+extern void bitbuf_setbit( bitbuf *b, size_t idx, int bit );
 
 /**
  * Adding data
