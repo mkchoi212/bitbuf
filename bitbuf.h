@@ -257,7 +257,7 @@ extern void bitbuf_lsh( bitbuf *, size_t );
 extern void bitbuf_rsh( bitbuf *, size_t );
 
 /**
- * Apply `OperationFunc` to two buffers and store the result in `res`
+ * Apply `OperatorFunc` to two buffers and store the result in `res`
  */
 extern void bitbuf_op( bitbuf *, bitbuf *, bitbuf *res, OperatorFunc op );
 
@@ -283,7 +283,7 @@ extern void bitbuf_xor( bitbuf *, bitbuf *, bitbuf *res );
  * `dataSize` is the number of bits a single character of data signifies
  */
 
-extern void bitbuf_append_str( bitbuf *, const char *, size_t base, size_t dataSize );
+extern void bitbuf_append_str( bitbuf *, const char *, size_t base, size_t unitLen );
 
 static inline void bitbuf_add_str_hex( bitbuf *b, const char *hexStr ) { 
     /* `base` is 16 for hexadecimal data
