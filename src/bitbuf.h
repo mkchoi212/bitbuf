@@ -285,11 +285,11 @@ extern void bitbuf_xor( bitbuf *, bitbuf *, bitbuf *res );
 
 extern void bitbuf_append_str( bitbuf *, const char *, size_t base, size_t unitLen );
 
+/* `base` is 16 for hexadecimal data
+ * `dataSize` is 4 as one character of hex (nibble) is 4 bits
+ */
 static inline void bitbuf_add_str_hex( bitbuf *b, const char *hexStr ) { 
-    /* `base` is 16 for hexadecimal data
-     * `dataSize` is 4 as one character of hex (nibble) is 4 bits
-     */
-
+ 
     size_t i, c;
     for( i = 0; i < strlen( hexStr ); ++i ) {
         c = hexStr[ i ];

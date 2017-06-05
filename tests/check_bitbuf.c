@@ -1,8 +1,4 @@
-#include <check.h>
 
-START_TEST (binstr) 
-{
-
+int main( void ) {
+    return 0;
 }
-END_TEST
-
