@@ -17,7 +17,7 @@ libbitbuf.a: bitbuf.o
 
 test:
 	$(CC) $(WARN) $(DEBUG) bitbuf_test.c bitbuf.c -o bb_test
-	time ./bb_test
+	./bb_test
 ftest:
 	$(CC) $(WARN) $(DEBUG) $(OP) bitbuf_test.c.c bitbuf.c -o bb_test
 	time ./bb_test
