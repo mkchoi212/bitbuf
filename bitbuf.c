@@ -107,7 +107,6 @@ void bitbuf_copy( bitbuf *dest, const bitbuf *src ) {
 
 void bitbuf_grow( bitbuf *bb, size_t extra ) { 
 
-    
     size_t newlen = BYTE_LEN( bb->alloc + extra );
     size_t oldlen = BYTE_LEN( bb->alloc ); 
 

@@ -59,7 +59,7 @@ void bitbuf_reset( bitbuf * );
 /* Release the byte buffer from bitbuf and the memory it used.
  * You should __not__ use this buffer after using this function unless you reinitialize it
  */
-void bitbuf_reset( bitbuf * );
+void bitbuf_release( bitbuf * );
 
 // TODO ADD LEN AND ALLOC
 /* Attach a byte array to the buffer. Specify the array to attach and the current length
