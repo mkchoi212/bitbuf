@@ -34,21 +34,25 @@ void bitbuf_init_zero( bitbuf *bb, size_t s ) {
 }
 
 void bitbuf_init_file( bitbuf *bb, const char *fname ) { 
+
     FILE *fp = fopen( fname, "rb" );
     if( fp == NULL )
        die( "init_file: %s does not exist", fname ); 
+
     bitbuf_read( bb, fp );
     fclose( fp );
 }
 
 void bitbuf_init_str( bitbuf *bb, const char *str ) { 
 
-    char *in = strdup( str );
+    char *in  = strdup( str );
     char *org = in;
     char *tok; 
+
     while( ( tok = strsep( &in, " " ) ) != NULL ) {
         if( strlen( tok ) <= 2 )
             continue; 
+        
         if( tok[0] != '0' )
             die( "init_str: Please provide the initializing string with either 0b | 0x prefixes" );
         if( tok[1] == 'b' )
@@ -83,24 +87,30 @@ void bitbuf_release( bitbuf *bb ) {
 }
 
 void bitbuf_attach( bitbuf *bb, const void *data, size_t alloc, size_t len ) { 
+
     if( bb->alloc )
         bitbuf_release( bb );
+
     bb->buf = ( unsigned char * )data;
     bb->len = len * 8;
     bb->alloc = alloc * 8;
 }
 
 unsigned char * bitbuf_detach( bitbuf *bb, size_t *len ) { 
+
     unsigned char *res;
     res = bb->buf; 
+
     if( len )
         *len = bb->len;
+
     bb->buf = NULL;
     bb->len = bb->alloc = 0;
     return res;
 }
 
 void bitbuf_copy( bitbuf *dest, const bitbuf *src ) { 
+
     bitbuf_reset( dest );
     bitbuf_addbuf( dest, src );
 }
@@ -123,13 +133,14 @@ void bitbuf_grow( bitbuf *bb, size_t extra ) {
 }
 
 void bitbuf_setlen( bitbuf *bb, size_t len ) {
-
-        if( len > ( bb->alloc ? bb->alloc : 0 ) )
-                    die( "setlen: Length beyond allocated buffer" );
-            bb->len = len;
+    if( len > ( bb->alloc ? bb->alloc : 0 ) )
+        die( "setlen: Length beyond allocated buffer" );
+    bb->len = len;
 }
 
-
+/* TODO
+ * Define various builtin funtions or generic functions if neccessary for various platforms
+ */
 static size_t popcnt( const unsigned char c ) {
     size_t res;
 #if defined (__GNUC__)
