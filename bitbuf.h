@@ -19,7 +19,7 @@ extern unsigned char bitbuf_slopbuf[];
 #define BITBUF_INIT { 0, 0, bitbuf_slopbuf }
 
 /* Least number of bytes required to fill `n` bits */
-#define BYTE_LEN(n) ( n + 7 / 8 )
+#define BYTE_LEN(n) (n + 7) / 8 
 
 /**
  * Initializers

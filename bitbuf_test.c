@@ -8,7 +8,7 @@
 int TEST_CNT;
 
 void success( char *fname ) {
-    printf( "%-20s", fname );
+    printf( "%-20s\n", fname );
 }
 
 int assert_str( char *res, char *expected, char *fname ) {
