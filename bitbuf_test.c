@@ -8,7 +8,7 @@
 int TEST_CNT;
 
 void success( char *fname ) {
-    printf( "%-20s\n", fname );
+    printf( "%-20sOK\n", fname );
 }
 
 int assert_str( char *res, char *expected, char *fname ) {
@@ -34,7 +34,7 @@ int assert_num( int expected, int res, char *fname ) {
 }
 
 void test_hexstr() {
-	char str[10];
+	char str[20];
     bitbuf bb = BITBUF_INIT;
 	bitbuf_init_str( &bb, "0xdeadbeefe" );
 	bitbuf_hex( &bb, str );
@@ -58,7 +58,7 @@ void test_binstr() {
 void test_ascii() {
 	char str[10];
 	bitbuf bb = BITBUF_INIT;
-	bitbuf_init_str( &bb, "0x68656c6c6f7767f726c64" );
+	bitbuf_init_str( &bb, "0x68656c6c6f776f726c64" );
 	bitbuf_ascii( &bb, str );
 
     assert_str( str, "helloworld", "ascii" ); 
@@ -90,7 +90,7 @@ void test_addbyte() {
 
 	bitbuf_hex( &b1, str );
 
-	if( assert_str( str, "123456789A", "addbyte" ) )
+	if( assert_str( str, "123456789a", "addbyte" ) )
         success( "addbyte" );
 	bitbuf_release( &b1 );
 }
@@ -114,7 +114,7 @@ void test_addbit() {
 void test_initstr() {
 	char str[20];
 	bitbuf bb = BITBUF_INIT;
-	bitbuf_init_str( &bb, "0xf 0b00010010010010000 x0deadf" );
+	bitbuf_init_str( &bb, "0xf 0b0001001001001000 0x0deadf" );
 	bitbuf_hex( &bb, str );
 	assert_str( str, "f12480deadf", "initstr" );
 	assert_num( bb.buf[ 0 ], 0xf1, "initstr-1" );
