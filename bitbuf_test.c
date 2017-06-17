@@ -56,7 +56,7 @@ void test_binstr() {
 }
 
 void test_ascii() {
-	char str[10];
+	char str[11];
 	bitbuf bb = BITBUF_INIT;
 	bitbuf_init_str( &bb, "0x68656c6c6f776f726c64" );
 	bitbuf_ascii( &bb, str );
@@ -79,7 +79,7 @@ void test_copy() {
 }
 
 void test_addbyte() {
-	char str[10];
+	char str[11];
 	
 	bitbuf b1 = BITBUF_INIT;
 	bitbuf_init_str( &b1, "0b00010010" );
@@ -149,6 +149,7 @@ void test_getbit() {
     
     if( i == bb.len )
         success( "getbit" );
+
 	bitbuf_release( &bb );
 }
 

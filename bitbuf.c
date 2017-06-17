@@ -371,7 +371,7 @@ void bitbuf_reverse( bitbuf *bb, size_t start, size_t n ) {
 		head = bitbuf_getbit( bb, i );
 		tail = bitbuf_getbit( bb, j );
 		bitbuf_setbit( bb, i, tail );
-		bitbuf_setbit( bb, j, tail );
+		bitbuf_setbit( bb, j, head );
 	}
 }
 		      

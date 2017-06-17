@@ -1,6 +1,6 @@
-CC=gcc
+CC=clang
 DEBUG=-g -gdwarf-3
-WARN=-Wall -Wextra -Wpointer-arith -Wunused
+WARN=-Wall -Wextra -Wpointer-arith -Wunused -Wshift-negative-value
 OP=-O3 -march=native -mtune=native -funroll-loops -m64
 TST=-pg -ftest-coverage -fprofile-arcs
 RM=rm -f
