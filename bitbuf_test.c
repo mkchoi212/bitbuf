@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "bitbuf.h"
 
-int TEST_CNT;
+int TEST_CNT = 0;
 
 void success( char *fname ) {
     printf( "%-20sOK\n", fname );
@@ -13,6 +13,7 @@ void success( char *fname ) {
 
 int assert_str( char *res, char *expected, char *fname ) {
     if( strcmp( expected, res ) == 0 ) {
+        ++TEST_CNT;
         return 1;
     } else {
         fprintf( stderr, "%s FAILED\n", fname );
@@ -24,6 +25,7 @@ int assert_str( char *res, char *expected, char *fname ) {
 
 int assert_num( int expected, int res, char *fname ) {
     if( expected == res ) {
+        ++TEST_CNT;
         return 1;
     } else {
         fprintf( stderr, "%s FAILED\n", fname );
@@ -178,8 +180,8 @@ void test_setgetbyte() {
     success( "getbyte" );
 
 	bitbuf_setbyte( &bb, 1, 3, 0xaa );
-    // TODO Add one more cond
     assert_num( 0xaa, bitbuf_getbyte( &bb, 1, 3 ), "getbyte" );
+    assert_num( 0x55, bitbuf_getbyte( &bb, 1, 4 ), "getbyte" );
     success( "setbyte" );
 	bitbuf_release( &bb ); 
 }
@@ -365,7 +367,7 @@ void test_reverse() {
 	char str[20];
 	
 	bitbuf bb = BITBUF_INIT;
-	bitbuf_init_str( &bb, "0xb75bd77f35f2" );
+	bitbuf_init_str( &bb, "0xb75bd77f35f7" );
 	
 	bitbuf_reverse_all( &bb, 4 );
 	bitbuf_hex( &bb, str );
@@ -468,8 +470,6 @@ int main() {
     test_setgetbyte();
     test_slice();
     test_op();
-
-	/* TODO Skip plus for now */
     //test_plus();
     test_shift();
     test_weight();
@@ -483,6 +483,6 @@ int main() {
     test_align();
     test_num();
 
-    printf( "--------------------------" );
-    printf( "ALL TESTS PASSED" );
+    printf( "--------------------------\n" );
+    printf( "%i tests passed\n", TEST_CNT );
 }
