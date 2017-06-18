@@ -151,7 +151,6 @@ void test_getbit() {
     
     if( i == bb.len )
         success( "getbit" );
-
 	bitbuf_release( &bb );
 }
 
