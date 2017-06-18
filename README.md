@@ -22,12 +22,12 @@ bitbuf_init_str( &b, "0xdeadbeef" );        // Supported prefixes are 0x and 0b
 ```
 or
 
-``
+```
 bitbuf_init_file( &b, "VALID_BIT_FILE" );
 ```
 
 - Seaching
-``
+```
 bitbuf b = BITBUF_INIT;
 bitbuf_init_file( &b, "VALID_BIT_FILE" );
 
