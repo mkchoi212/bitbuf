@@ -1,5 +1,11 @@
 language: c
+before-install:
+    - pip install --user cpp-coveralls
 compiler: 
     - clang
     - gcc
 script: make test
+after_success:
+    - coveralls 
+
+
