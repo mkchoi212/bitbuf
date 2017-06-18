@@ -1,8 +1,8 @@
-CC=clang
+CC=gcc
 DEBUG=-g -gdwarf-3
 WARN=-Wall -Wextra -Wpointer-arith -Wunused -Wshift-negative-value
 OP=-O3 -march=native -mtune=native -funroll-loops -m64
-TST=-pg -ftest-coverage -fprofile-arcs
+TST=-pg -coverage -fprofile-arcs
 RM=rm -f
 
 SRC=bitbuf.c
@@ -16,7 +16,7 @@ libbitbuf.a: bitbuf.o
 	ar -rcus libbitbuf.a bitbuf.o
 
 test:
-	$(CC) $(WARN) $(DEBUG) bitbuf_test.c bitbuf.c -o bb_test
+	$(CC) $(WARN) $(DEBUG) $(TST) bitbuf_test.c bitbuf.c -o bb_test
 	./bb_test
 ftest:
 	$(CC) $(WARN) $(DEBUG) $(OP) bitbuf_test.c.c bitbuf.c -o bb_test
