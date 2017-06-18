@@ -340,14 +340,11 @@ void bitbuf_addbuf( bitbuf *dest, const bitbuf *src ) {
 	pad = dest->len % 8;
 	trash = 8 - pad;
 	
-	/* Insert bits to fill destination's byte
-	 * and prepare src for copying */
-	dest->buf[ dest->len / 8 ] |= src->buf[ 0 ] >> pad;
-	
 	size_t copycnt = src->len;
 	bitbuf fresh = BITBUF_INIT;
 	
 	if( pad ) {
+		dest->buf[ dest->len / 8 ] |= src->buf[ 0 ] >> pad;
 		bitbuf_copy( &fresh, src );
 		bitbuf_lsh( &fresh, trash );
 		copycnt -= trash;
@@ -355,7 +352,7 @@ void bitbuf_addbuf( bitbuf *dest, const bitbuf *src ) {
 		fresh = *src;
 	}
 	
-	memcpy( dest->buf + BYTE_LEN( dest->len ), &fresh, BYTE_LEN( copycnt ) );
+	memcpy( dest->buf + BYTE_LEN( dest->len ), fresh.buf, BYTE_LEN( copycnt ) );
 	dest->len += fresh.len;
 	
 	if( pad )
@@ -607,7 +604,7 @@ char* bitbuf_rep( bitbuf *bb ) {
 		bitbuf binbuf = BITBUF_INIT;
 		bitbuf_slice( &binbuf, bb, bb->len - rem, rem );
 		bitbuf_bin( &binbuf, bin );
-		sprintf( cur, "0b%s", bin );
+		sprintf( cur, " 0b%s", bin );
 		bitbuf_release( &binbuf );
 	}
 	
