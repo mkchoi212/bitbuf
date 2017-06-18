@@ -1,6 +1,11 @@
 # Exectuable name
 bb_test
 
+# Coverage files
+*.gcov
+*.gcda
+*.gcno
+
 # Prerequisites
 *.d
 
