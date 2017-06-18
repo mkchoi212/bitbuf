@@ -2,3 +2,5 @@
 *~
 *.swp
 .gdbinit
+*.dSYM
+bb_test
