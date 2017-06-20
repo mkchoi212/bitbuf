@@ -463,7 +463,7 @@ void test_num() {
     
 	success( "num" );
 	bitbuf_release( &b1 );
-	bitbuf_release( &b2 );
+       	bitbuf_release( &b2 );
 }
 
 int main() {
