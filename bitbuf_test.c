@@ -8,52 +8,53 @@
 int TEST_CNT = 0;
 
 void success( char *fname ) {
-    printf( "%-20sOK\n", fname );
+       	printf( "%-20sOK\n", fname );
 }
 
 int assert_str( char *res, char *expected, char *fname ) {
-    if( strcmp( expected, res ) == 0 ) {
-        ++TEST_CNT;
-        return 1;
-    } else {
-        fprintf( stderr, "%s FAILED\n", fname );
-        fprintf( stderr, "\t\tExpected %s\t\t got %s\n", expected, res );
-        exit( EXIT_FAILURE );
-        return 0;
-    }
+       	if( strcmp( expected, res ) == 0 ) {
+	       	++TEST_CNT;
+		return 1;
+       	} else {
+		fprintf( stderr, "%s FAILED\n", fname );
+		fprintf( stderr, "\t\tExpected %s\t\t got %s\n", expected, res );
+		exit( EXIT_FAILURE );
+		return 0;
+       	}
 }
 
 int assert_num( int expected, int res, char *fname ) {
-    if( expected == res ) {
-        ++TEST_CNT;
-        return 1;
-    } else {
-        fprintf( stderr, "%s FAILED\n", fname );
-        fprintf( stderr, "\t\tExpected %d\t\t got %d\n", expected, res );
-        exit( EXIT_FAILURE );
-        return 0;
-    }
+       	if( expected == res ) {
+		++TEST_CNT;
+		return 1;
+       	} else {
+		fprintf( stderr, "%s FAILED\n", fname );
+		fprintf( stderr, "\t\tExpected %d\t\t got %d\n", expected, res );
+		exit( EXIT_FAILURE );
+		return 0;
+       	}
 }
 
 void test_hexstr() {
 	char str[20];
-    bitbuf bb = BITBUF_INIT;
+       	bitbuf bb = BITBUF_INIT;
 	bitbuf_init_str( &bb, "0xdeadbeefe" );
 	bitbuf_hex( &bb, str );
 
-    assert_str( str, "deadbeefe", "hexstr" );
-    success( "hexstr" );
-    bitbuf_release( &bb );
+
+    	assert_str( str, "deadbeefe", "hexstr" );
+       	success( "hexstr" );
+       	bitbuf_release( &bb );
 }
 
 void test_binstr() {
-    char str[33];
+       	char str[33];
 	bitbuf bb = BITBUF_INIT;
 	bitbuf_init_str( &bb, "0x1234abcd" );
 	bitbuf_bin( &bb, str );
 
-    assert_str( str, "00010010001101001010101111001101", "binstr" );
-    success( "binstr" );
+       	assert_str( str, "00010010001101001010101111001101", "binstr" );
+       	success( "binstr" );
 	bitbuf_release( &bb );
 }
 
@@ -63,8 +64,8 @@ void test_ascii() {
 	bitbuf_init_str( &bb, "0x68656c6c6f776f726c64" );
 	bitbuf_ascii( &bb, str );
 
-    assert_str( str, "helloworld", "ascii" ); 
-    success( "ascii" );
+       	assert_str( str, "helloworld", "ascii" ); 
+	success( "ascii" );
 	bitbuf_release( &bb );
 }
 
@@ -73,10 +74,11 @@ void test_copy() {
 	bitbuf_init_str( &b1, "0xdeadbeef" );
 	bitbuf b2 = BITBUF_INIT;
 	bitbuf_copy( &b2, &b1 );
-	
-    if( bitbuf_cmp( &b1, &b2 ) == 0 )
-        success( "copy" );
-    bitbuf_release( &b1 );
+
+	if( bitbuf_cmp( &b1, &b2 ) == 0 )
+	       	success( "copy" );
+
+       	bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
 }
 
@@ -93,7 +95,7 @@ void test_addbyte() {
 	bitbuf_hex( &b1, str );
 
 	if( assert_str( str, "123456789a", "addbyte" ) )
-        success( "addbyte" );
+		success( "addbyte" );
 	bitbuf_release( &b1 );
 }
 
@@ -109,7 +111,7 @@ void test_addbit() {
 	
 	bitbuf_hex( &bb, str );
 	assert_str( str, "1234", "addbit" );
-    success( "addbit" );
+       	success( "addbit" );
 	bitbuf_release( &bb );
 }
 
@@ -128,10 +130,10 @@ void test_initstr() {
 	
 	bitbuf_init_str( &bb, "0xdeadbeefffeeee" );
 	bitbuf_hex( &bb, str );
-	if( assert_str( str, "deadbeefffeeee", "initstr-4" ) )
-        success( "initstr" );
 
-    bitbuf_release( &bb );
+	if( assert_str( str, "deadbeefffeeee", "initstr-4" ) )
+		success( "initstr" ); 
+	bitbuf_release( &bb );
 }
 
 void test_getbit() {
@@ -145,12 +147,13 @@ void test_getbit() {
 	
 	for( i = 0; i < bb.len; ++i ) {
 		bit = bitbuf_getbit( &bb, i );
-        if( !assert_num( res[ i ] - 48, bit, "getbit" ) )
-            break;
+
+		if( !assert_num( res[ i ] - 48, bit, "getbit" ) )
+		    break;
 	}
     
-    if( i == bb.len )
-        success( "getbit" );
+	if( i == bb.len )
+		success( "getbit" );
 	bitbuf_release( &bb );
 }
 
@@ -167,21 +170,23 @@ void test_setbit() {
 	
 	bitbuf_hex( &bb, str );
 	assert_str( str, "1234", "setbit" );
-    success( "setbit" );
+       	success( "setbit" );
 	bitbuf_release( &bb );
 }
 
 void test_setgetbyte() {
 	bitbuf bb = BITBUF_INIT;
 	bitbuf_init_str( &bb, "0xdeadbeef 0b1" );
+
 	assert_num( 0xdf, bitbuf_getbyte( &bb, 3, 1 ), "getbyte" ); 
-    assert_num( 0xdf, bitbuf_getbyte( &bb, 3, 1 ), "getbyte" );
-    success( "getbyte" );
+	assert_num( 0xdf, bitbuf_getbyte( &bb, 3, 1 ), "getbyte" );
+       	success( "getbyte" );
 
 	bitbuf_setbyte( &bb, 1, 3, 0xaa );
-    assert_num( 0xaa, bitbuf_getbyte( &bb, 1, 3 ), "getbyte" );
-    assert_num( 0x55, bitbuf_getbyte( &bb, 1, 4 ), "getbyte" );
-    success( "setbyte" );
+       	assert_num( 0xaa, bitbuf_getbyte( &bb, 1, 3 ), "getbyte" );
+       	assert_num( 0x55, bitbuf_getbyte( &bb, 1, 4 ), "getbyte" );
+       	success( "setbyte" );
+
 	bitbuf_release( &bb ); 
 }
 
@@ -200,8 +205,10 @@ void test_slice() {
 	
 	bitbuf_slice( &slice, &bb, 9, 16 );
 	bitbuf_hex( &slice, str );
+
 	if( assert_str( str, "5b7d", "slice-2" ) )
-        success( "slice" );
+		success( "slice" );
+
 	bitbuf_release( &bb );
 	bitbuf_release( &slice );
 }
@@ -217,21 +224,21 @@ void test_op() {
 	
 	bitbuf b2= BITBUF_INIT;
 	bitbuf_init_str( &b2, "0xcc99e897" );
-    {	
-        bitbuf_xor( &b1, &b2, &res );
-        bitbuf_hex( &res, str );
-        if( assert_str( str, "deadbeef", "op-xor" ) )
-            success( "xor" );
-        memset( str, '\0', 20 );
-        bitbuf_reset( &res );
-    }
-    
-    {
-        bitbuf_or( &b1, &b2, &res );
-        bitbuf_hex( &res, str );
-        if( assert_str( str, "debdfeff", "op-or" ) )
-            success( "or" );
-    }
+       	{	
+		bitbuf_xor( &b1, &b2, &res );
+		bitbuf_hex( &res, str );
+		if( assert_str( str, "deadbeef", "op-xor" ) )
+		    success( "xor" );
+		memset( str, '\0', 20 );
+		bitbuf_reset( &res );
+       	}
+
+       	{
+		bitbuf_or( &b1, &b2, &res );
+		bitbuf_hex( &res, str );
+		if( assert_str( str, "debdfeff", "op-or" ) )
+		    success( "or" );
+       	}
 	
 	bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
@@ -253,8 +260,9 @@ void test_plus() {
 	bitbuf_hex( &res, str );
 	
 	if( assert_str( str, "1ee6667e", "plus" ) )
-        success( "plus" );
-    bitbuf_release( &b1 );
+		success( "plus" );
+
+       	bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
 	bitbuf_release( &res );
 }
@@ -263,30 +271,29 @@ void test_shift() {
 	char str[20];
 	
 	bitbuf bb = BITBUF_INIT;
-	bitbuf_init_str( &bb, "0xdeadbeefcafe" );
-	
-    {
-        bitbuf_lsh( &bb, 8 );
-        bitbuf_hex( &bb, str );
-        assert_str( str, "adbeefcafe00", "lsh-1" );
-        memset( str, '\0', 20 );
+	bitbuf_init_str( &bb, "0xdeadbeefcafe" ); 
+	{
+		bitbuf_lsh( &bb, 8 );
+		bitbuf_hex( &bb, str );
+		assert_str( str, "adbeefcafe00", "lsh-1" );
+		memset( str, '\0', 20 );
 
-        bitbuf_lsh( &bb, 5 );
-        bitbuf_hex( &bb, str );
-        assert_str( str, "b7ddf95fc000", "lsh-2" );
-        memset( str, '\0', 20 );
-    }
-    
-    {
-        bitbuf_rsh( &bb, 9 );
-        bitbuf_hex( &bb, str );
-        assert_str( str, "005beefcafe0", "rsh-1" );
-        memset( str, '\0', 20 );
-        
-        bitbuf_rsh( &bb, 52 );
-        bitbuf_hex( &bb, str );
-        assert_str( str, "000000000000", "rsh-2" );
-    }
+		bitbuf_lsh( &bb, 5 );
+		bitbuf_hex( &bb, str );
+		assert_str( str, "b7ddf95fc000", "lsh-2" );
+		memset( str, '\0', 20 );
+       	} 
+
+	{
+		bitbuf_rsh( &bb, 9 );
+		bitbuf_hex( &bb, str );
+		assert_str( str, "005beefcafe0", "rsh-1" );
+		memset( str, '\0', 20 );
+		
+		bitbuf_rsh( &bb, 52 );
+		bitbuf_hex( &bb, str );
+		assert_str( str, "000000000000", "rsh-2" );
+       	}
 	
 	bitbuf_release( &bb );	
 }
@@ -300,8 +307,8 @@ void test_weight() {
 		bitbuf_setbit( &bb, i, 1 );
 	 
 	int weight = bitbuf_weight( &bb );
-    assert_num( 100, weight, "weight" );
-    success( "weight" );
+       	assert_num( 100, weight, "weight" );
+       	success( "weight" );
 	bitbuf_release( &bb );
 }
 
@@ -319,8 +326,8 @@ void test_find() {
 		++cnt;
 		++hit;
 	}
-    
-    //TODO add assertion
+
+	assert_num( 933, cnt, "find" );
 	bitbuf_release( &bb );
 	bitbuf_release( &pat );
 }
@@ -339,7 +346,7 @@ void test_replace() {
 	bitbuf_replace( &bb, &pat, &fresh, 0, 0, bb.len );
 	bitbuf_hex( &bb, str );
 	assert_str( str, "beef00beef", "replace" );
-    success( "replace" );
+       	success( "replace" );
 	
 	bitbuf_release( &bb );
 	bitbuf_release( &pat );
@@ -375,8 +382,9 @@ void test_reverse() {
 	
 	bitbuf_reverse_all( &bb, 8 );
 	bitbuf_hex( &bb, str );
+
 	assert_str( str, "7bb57df7537f", "reverse" );
-    success( "reverse" );
+       	success( "reverse" );
 	bitbuf_release( &bb );
 }
 
@@ -390,7 +398,7 @@ void test_detach() {
 	unsigned char *buf = bitbuf_detach( &bb, &array_len );
 	assert_num( 0xde, buf[0], "detach" );
 	assert_num( buf_len, array_len, "detach" );
-    success( "detach" );
+       	success( "detach" );
 	
 	free( buf );
 }
@@ -407,13 +415,15 @@ void test_io() {
 	
 	FILE *fp2 = fopen( fname, "r" );
 	bitbuf_read( &bb, fp2 );
+
 	char str[9];
 	bitbuf_hex( &bb, str );
-	assert_str( str, "deadbee0", "read" );
 	fclose( fp2 );
 	remove( fname );
 	bitbuf_release( &bb );
-    success( "read" );
+
+	assert_str( str, "deadbee0", "read" );
+       	success( "read" );
 }
 
 void test_rep() {
@@ -424,7 +434,7 @@ void test_rep() {
 	assert_str( rep, "0x0123456789 0b01", "rep" );
 	free( rep );
 	bitbuf_release( &bb );
-    success( "rep" );
+       	success( "rep" );
 }
 
 void test_align() {
@@ -436,7 +446,7 @@ void test_align() {
 	
 	bitbuf_align( &b1, &b2 );
 	assert_num( 0, bitbuf_cmp( &b1, &b2 ), "align" );
-    success( "align" );
+       	success( "align" );
 	
 	bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
@@ -451,7 +461,7 @@ void test_num() {
 	bitbuf_init_sub( &b2, &b1, 16, 3 );
 	assert_num( 6, bitbuf_num( &b2 ), "num-2" );
     
-    success( "num" );
+	success( "num" );
 	bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
 }
@@ -483,7 +493,7 @@ int main() {
     test_num();
 
     printf( "--------------------------\n" );
-    printf( "%i tests passed\n", TEST_CNT );
+    printf( "% tests passed\n", TEST_CNT );
     return EXIT_SUCCESS;
 
 }
