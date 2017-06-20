@@ -138,16 +138,8 @@ void bitbuf_setlen( bitbuf *bb, size_t len ) {
     bb->len = len;
 }
 
-/* TODO
- * Define various builtin funtions or generic functions if neccessary for various platforms
- */
 static size_t popcnt( const unsigned char c ) {
     size_t res;
-#ifdef __MSC_VER
-#  include <intrin.h>
-#  define __builtin_popcount __popcnt
-#endif
-
     res = __builtin_popcount( c );
     return res;
 }
