@@ -32,7 +32,8 @@ Well, you have several choices to choose from.
 
 - `init( size_t )` 
     - Initalize an empty buffer
-- `init_zero( size_t )` - Initialize a buffer filled with n zeros.
+- `init_zero( size_t )` 
+    - Initialize a buffer filled with n zeros.
 - `init_file( const char * )`
     - Initialize a buffer with contents from a file
 - `init_str( const char * )`
