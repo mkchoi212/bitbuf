@@ -1,11 +1,13 @@
 language: c
 before-install:
-    - pip install --user cpp-coveralls
+        apt-get install -qq valgrind
 compiler: 
     - clang
     - gcc
-script: make test
+
+script:
+    - make test
+    - valgrind --error-exitcode=1 ./bb_test
+
 after_success:
     - bash <(curl -s https://codecov.io/bash)
-
-
