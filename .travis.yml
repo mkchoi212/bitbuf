@@ -13,7 +13,6 @@ compiler:
 
 script:
     - make test
-    - valgrind --error-exitcode=1 ./bb_test
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
