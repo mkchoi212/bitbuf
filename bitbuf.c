@@ -628,7 +628,9 @@ size_t bitbuf_read( bitbuf *bb, FILE *fp ) {
 	if( bb->alloc < bitlen )
 		bitbuf_grow( bb, bitlen - bb->alloc );
 	
-	fread( bb->buf + BYTE_LEN( bb->len ), fsize, sizeof( unsigned char ), fp );
+	if( fread( bb->buf + BYTE_LEN( bb->len ), 1, fsize, fp ) != fsize )
+		die( "read: Could not read from file" );
+
 	bb->len = bitlen;
 	return bitlen;
 }

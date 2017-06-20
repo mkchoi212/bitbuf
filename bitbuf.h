@@ -21,6 +21,9 @@ extern unsigned char bitbuf_slopbuf[];
 /* Least number of bytes required to fill `n` bits */
 #define BYTE_LEN(n) (n + 7) / 8 
 
+/* Buffer size when `fread`ing  */
+#define MAX_BUF 4096
+
 /**
  * Initializers
  * ______________________________________
