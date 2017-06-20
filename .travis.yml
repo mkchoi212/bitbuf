@@ -1,5 +1,8 @@
 language: c
 
+os:
+    - linux
+
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y -qq valgrind
@@ -10,7 +13,6 @@ compiler:
 
 script:
     - make test
-    - valgrind --error-exitcode=1 ./bb_test
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)

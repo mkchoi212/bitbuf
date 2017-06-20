@@ -2,7 +2,7 @@ CC=gcc
 DEBUG=-g -gdwarf-3
 WARN=-Wno-shift-negative-value -Wall -Wextra -Wpointer-arith -Wunused
 OP=-O3 -march=native -mtune=native -funroll-loops -m64
-TST=-pg -coverage
+TST=-coverage
 RM=rm -f
 
 SRC=bitbuf.c
@@ -18,11 +18,10 @@ libbitbuf.a: bitbuf.o
 test:
 	$(CC) $(WARN) $(DEBUG) $(TST) bitbuf_test.c bitbuf.c -o bb_test
 	./bb_test
-ttest:
-	$(CC) $(WARN) $(TST) $(OP) bitbuf_test.c bitbuf.c -o bb_test
-	./bb_test
-	gcov bitbuf.gcda
-	gprof bb_test > bitbuf.gprof
+	make valgrind
+
+valgrind:
+	valgrind --leak-check=full --error-exitcode=42 ./bb_test
 
 bitbuf.o: bitbuf.h bitbuf.c
 	$(CC) $(WARN) $(OP) -fPIC -c bitbuf.c
