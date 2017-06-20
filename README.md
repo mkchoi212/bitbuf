@@ -87,3 +87,64 @@ bitbuf_hex( &b, hexStr );
 On the first line, we added a single bit to a bitbuf that already contained `0xdeadbeef`, making its 32 + 1 bits long.
 But this means that since each hex digit is 4 bits long, there is no unambiguous way to represent it as a hex.
 When similar exceptions are met within the library, the program will output an error message to the stderr and exit.
+
+## Modifying bitbuf
+A bitbuf can be treated just like an array of bits. You can slice it, delete sections, append bitbufs and more.
+
+If you ask for a single bit, an unsigned char is returned as it is the smallest type available in C and reminds the user once again that a bit can either be 0 or 1.
+
+To join bitbufs, you can use `bitbuf_addbuf` or `bitbuf_addstr_[hex | bin ]`.
+```
+bitbuf_addstr_hex( &b, "cafe" )
+```
+
+## Finding and Replacing
+`bitbuf_find` is provided to search for bit patterns within a bitbuf. You can choose whether to search from the beginning or any bit position.
+In addition, you can also specifiy the number of garbles allowed during the search; number of bits mismatched.
+
+```
+bitbuf b = BITBUF_INIT;
+bitbuf_init_file( &b, "FILE_NAME" );
+
+bitbuf pat = BITBUF_INIT;
+bitbuf_init_str( &pat, "0xcafe" );
+
+int hit;
+hit = 0;
+
+while( ( hit = bitbuf_find( &b, &pat, 32, hit ) ) != -1 )   // find returns -1 when no patterns are found
+    ++hit;
+    
+bitbuf_release( &b );
+bitbuf_release( &pat );
+```
+
+# Example
+The sieve of Eratosthenes is an ancient (and very inefficient) method of finding prime numbers. The algorithm starts with the number 2 (which is prime) and marks all of its multiples as not prime, it then continues with the next unmarked integer (which will also be prime) and marks all of its multiples as not prime.
+
+So to print all primes under a million you could write:
+
+```
+const size_t MAX_LIM = 1000000;                // We will do a search until million
+    bitbuf buf = BITBUF_INIT;
+    bitbuf_init_zero( &buf, 1000000 );             // Create million zero bits. They will be set to indicate if that bit position isn't prime
+
+    size_t i, j;
+    for( i = 2; i < MAX_LIM; ++i ) {
+        if( !bitbuf_getbit( &buf, i ) ) {
+            printf( "%i\n", i );
+            
+            for( j = i * 2; j < MAX_LIM; j+= i ) 
+                bitbuf_setbit( &buf, j, 1 );       // Set all multiples of current prime to 1
+        }
+    }
+
+    bitbuf_release( &buf );
+```
+This example illustrates both bit checking and setting.
+
+One reason you might want to use bitbuf for this purpose - instead of a plain array - is that the million bits only take up a million bits in memory, whereas for a list of integers it would be much more. Try asking for a billion elements in a list - unless you’ve got some really nice hardware it will fail, whereas a billion element bitbuf only takes 125MB.
+
+# TODO
+- Implement `bitbuf_prependbuf`
+- Implement `bitbuf_insert`

@@ -61,7 +61,6 @@ void bitbuf_reset( bitbuf * );
  */
 void bitbuf_release( bitbuf * );
 
-// TODO ADD LEN AND ALLOC
 /* Attach a byte array to the buffer. Specify the array to attach and the current length
  * of the array in __BYTES__ and the amount of malloc()ed memory.
  * The array __must__ have been malloc()ed before being attached and can't be free()ed directly
@@ -153,9 +152,8 @@ void bitbuf_setbyte( bitbuf *, size_t pos, size_t offset, unsigned char byte );
 void bitbuf_addbit( bitbuf *, int );
 void bitbuf_addbyte( bitbuf *, unsigned char );
 
-// TODO FIX POS
 /* Append the `dest` buffer to the end of the `src` buffer */
-void bitbuf_addbuf( bitbuf *src, const bitbuf *dest );
+void bitbuf_addbuf( bitbuf *dest, const bitbuf *src );
 
 /* Convert string data to bits and add to buffer
  * Provided base must be between 2 and 36 inclusive
@@ -176,7 +174,6 @@ void bitbuf_addstr_hex( bitbuf *, const char * );
  */
 typedef unsigned char ( *OperatorPtr )( unsigned char, unsigned char );
 
-// TODO CHANGE ORDER OF ARGS
 /* Pass in a function pointer of siginture `OperatorPtr` for two bitbuf's to be evaluated */
 void bitbuf_op( const bitbuf *, const bitbuf *, bitbuf *res, OperatorPtr op );
 
@@ -214,8 +211,8 @@ void bitbuf_ascii( const bitbuf *, char * );
  */
 char * bitbuf_rep( bitbuf * );
 
-// TODO REFER TO INT_MAX
-/* Numeric representation of the buffer
+/* TODO REFER TO INT_MAX
+ * Numeric representation of the buffer
  * Maximum number supported is 4 bytes or 4,294,967,295
  */
 unsigned long bitbuf_num( const bitbuf * );
