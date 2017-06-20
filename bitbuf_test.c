@@ -493,7 +493,7 @@ int main() {
     test_num();
 
     printf( "--------------------------\n" );
-    printf( "% tests passed\n", TEST_CNT );
+    printf( "%i tests passed\n", TEST_CNT );
     return EXIT_SUCCESS;
 
 }
