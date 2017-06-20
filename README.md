@@ -1,5 +1,5 @@
 # bitbuf
-<div style="text-align:center"><img src ="./bitbuf_logo.gif" /></div>
+![Rad Logo](./bitbuf_logo.gif)
 
 [![Build Status](https://travis-ci.org/mkchoi212/bitbuf.svg?branch=master)](https://travis-ci.org/mkchoi212/bitbuf)
 [![codecov](https://codecov.io/gh/mkchoi212/bitbuf/branch/master/graph/badge.svg)](https://codecov.io/gh/mkchoi212/bitbuf)
@@ -11,9 +11,9 @@ They can also be sliced, appended, reversed, inserted and so on with simple func
 They can also be searched, replaced, read from, and navigated with ease.
 
 # How bitbuf works
-All operations in this library works under a single structure named `bitbuf`. The structure is composed of three variables; `buf`, `alloc`, and `len`.
+All operations work under a single struct named `bitbuf`. The struct is composed of three variables; `buf`, `alloc`, and `len`.
 
-First, `buf` is a pointer to an `unsigned char` array, which holds all the bits. 
+`buf` is a pointer to an `unsigned char` array, which holds all the data. 
 `alloc` is a `size_t` variable that indicates how many bits have been allocated for usage behind the scenes.
 `len` then shows how much of the allocated space is actually being used to store valid data.
 

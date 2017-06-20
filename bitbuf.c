@@ -143,11 +143,12 @@ void bitbuf_setlen( bitbuf *bb, size_t len ) {
  */
 static size_t popcnt( const unsigned char c ) {
     size_t res;
-#if defined (__GNUC__)
-    res = __builtin_popcount( c );
-#else
-    res = __builtin_popcount( c );
+#ifdef __MSC_VER
+#  include <intrin.h>
+#  define __builtin_popcount __popcnt
 #endif
+
+    res = __builtin_popcount( c );
     return res;
 }
 
