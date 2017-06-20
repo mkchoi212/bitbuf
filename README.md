@@ -29,11 +29,16 @@ This is required at all times as C does not initialize variables with their defa
 OK, we've just created a bitbuf structure on the stack. Cool, but how do I initialize it with bits stored in the structure?
 
 Well, you have several choices to choose from.
-- `init( size_t )` : Initalized an empty buffer
-- `init_zero( size_t )` : Initalized a buffer filled with n zeros.
-- `init_file( const char * )` : Initalized a buffer with contents from a file
-- `init_str( const char * )` : Initalized a buffer from strings
-- `init_sub( bitbuf *src )` : Initalized a buffer with contents from another buffer
+
+- `init( size_t )` 
+    - Initalize an empty buffer
+- `init_zero( size_t )` - Initialize a buffer filled with n zeros.
+- `init_file( const char * )`
+    - Initialize a buffer with contents from a file
+- `init_str( const char * )`
+    - Initialize a buffer from strings
+- `init_sub( bitbuf *src )`
+    - Initialize a buffer with contents from another buffer
 
 Out of the five methods, the most versatile method to create a bitbuf is with strings.
 So, I will use that as the main example.
