@@ -132,20 +132,20 @@ So to print all primes under a million you could write:
 
 ```
 const size_t MAX_LIM = 1000000;                // We will do a search until million
-    bitbuf buf = BITBUF_INIT;
-    bitbuf_init_zero( &buf, 1000000 );             // Create million zero bits. They will be set to indicate if that bit position isn't prime
+bitbuf buf = BITBUF_INIT;
+bitbuf_init_zero( &buf, 1000000 );             // Create million zero bits. They will be set to indicate if that bit position isn't prime
 
-    size_t i, j;
-    for( i = 2; i < MAX_LIM; ++i ) {
-        if( !bitbuf_getbit( &buf, i ) ) {
-            printf( "%i\n", i );
-            
-            for( j = i * 2; j < MAX_LIM; j+= i ) 
-                bitbuf_setbit( &buf, j, 1 );       // Set all multiples of current prime to 1
-        }
+size_t i, j;
+for( i = 2; i < MAX_LIM; ++i ) {
+    if( !bitbuf_getbit( &buf, i ) ) {
+        printf( "%i\n", i );
+        
+        for( j = i * 2; j < MAX_LIM; j+= i ) 
+            bitbuf_setbit( &buf, j, 1 );       // Set all multiples of current prime to 1
     }
+}
 
-    bitbuf_release( &buf );
+bitbuf_release( &buf );
 ```
 This example illustrates both bit checking and setting.
 
