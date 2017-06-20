@@ -1,6 +1,6 @@
 language: c
 before-install:
-        apt-get install -qq valgrind
+    - sudo apt-get install -qq valgrind
 compiler: 
     - clang
     - gcc
