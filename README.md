@@ -1,8 +1,10 @@
 # bitbuf
+<div style="text-align:center"><img src ="./bitbuf_logo.gif" /></div>
+
 [![Build Status](https://travis-ci.org/mkchoi212/bitbuf.svg?branch=master)](https://travis-ci.org/mkchoi212/bitbuf)
 [![codecov](https://codecov.io/gh/mkchoi212/bitbuf/branch/master/graph/badge.svg)](https://codecov.io/gh/mkchoi212/bitbuf)
 
-bitbuf is a C API designed to help make the creation and analysis of binary data as simple and natural as possible.
+bitbuf is a fast C API designed to help make the creation and analysis of binary data as simple and natural as possible.
 
 bitbuf structures can be constructed from integers, strings, or files.
 They can also be sliced, appended, reversed, inserted and so on with simple functions.
