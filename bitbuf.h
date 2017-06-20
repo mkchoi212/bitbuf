@@ -24,6 +24,12 @@ extern unsigned char bitbuf_slopbuf[];
 /* Buffer size when `fread`ing  */
 #define MAX_BUF 4096
 
+/* popcount support for Visual Studio */
+#ifdef __MSC_VER
+#  include <intrin.h>
+#  define __builtin_popcount __popcnt
+#endif
+
 /**
  * Initializers
  * ______________________________________
