@@ -145,12 +145,12 @@ void test_getbit() {
 	
 	for( i = 0; i < bb.len; ++i ) {
 		bit = bitbuf_getbit( &bb, i );
-        if( !assert_num( res[ i ] - 48, bit, "getbit" ) )
-            break;
+        assert_num( res[ i ] - 48, bit, "getbit" );
 	} 
+
 	assert_num( i, bb.len, "getbit" );
-       	success( "getbit" );
-       	bitbuf_release( &bb );
+    success( "getbit" );
+    bitbuf_release( &bb );
 }
 
 void test_setbit() {
@@ -199,6 +199,7 @@ void test_slice() {
 	
 	bitbuf_slice( &slice, &bb, 9, 16 );
 	bitbuf_hex( &slice, str );
+
 	if( assert_str( str, "5b7d", "slice-2" ) )
         success( "slice" );
 	bitbuf_release( &bb );
