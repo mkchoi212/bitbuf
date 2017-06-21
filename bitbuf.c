@@ -485,16 +485,9 @@ void bitbuf_plus( const bitbuf *a, const bitbuf *b, bitbuf *res ) {
 	bitbuf lval = BITBUF_INIT;
 	bitbuf rval = BITBUF_INIT;
 	
-	if( a->len == b->len ) {
-        lval = *a;
-        rval = *b;
-	} else if( a->len > b->len ) {
-        lval = *a;
-		bitbuf_copy( &rval, b );
-	} else {
-        bitbuf_copy( &lval, a );
-        rval = *b;
-    }
+	/* TODO optimize by not copying every time*/	
+	bitbuf_copy( &lval, a );
+	bitbuf_copy( &rval, b );
 	bitbuf_align( &lval, &rval );
 
 	int i, sum, carry;
@@ -515,10 +508,8 @@ void bitbuf_plus( const bitbuf *a, const bitbuf *b, bitbuf *res ) {
 		bitbuf_setbit( res, pad - 1, 1 );
 	}
 	
-	if( lval.len != a->len )
-		bitbuf_release( &lval );
-    else
-		bitbuf_release( &rval );
+	bitbuf_release( &lval );
+	bitbuf_release( &rval );
 }
 
 void bitbuf_addstr( bitbuf *bb, const char *str, size_t base, size_t ulen ) {
