@@ -88,11 +88,12 @@ void test_addbyte() {
 	bitbuf_addbyte( &b1, 0x34 );
 	bitbuf_addbyte( &b1, 0x56 );
 	bitbuf_addbyte( &b1, 0x78 );
-	bitbuf_addbyte( &b1, 0x9A );
+    bitbuf_addstr_hex( &b1, "9" );
+	bitbuf_addbyte( &b1, 0xab );
 
 	bitbuf_hex( &b1, str );
 
-	if( assert_str( str, "1123456789a", "addbyte" ) )
+	if( assert_str( str, "1123456789ab", "addbyte" ) )
         success( "addbyte" );
 	bitbuf_release( &b1 );
 }
