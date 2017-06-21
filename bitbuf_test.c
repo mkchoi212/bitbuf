@@ -415,12 +415,11 @@ void test_io() {
 	fclose( fp );
 	bitbuf_reset( &bb );
 	
-	FILE *fp2 = fopen( fname, "r" );
-	bitbuf_read( &bb, fp2 );
+	bitbuf_init_file( &bb, fname );
 	char str[9];
 	bitbuf_hex( &bb, str );
+
 	assert_str( str, "deadbee0", "read" );
-	fclose( fp2 );
 	remove( fname );
 	bitbuf_release( &bb );
     success( "read" );
