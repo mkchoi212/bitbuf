@@ -469,7 +469,7 @@ int main() {
     test_setgetbyte();
     test_slice();
     test_op();
-    //test_plus();
+    test_plus();
     test_shift();
     test_weight();
     test_find();
