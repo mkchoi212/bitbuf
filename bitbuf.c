@@ -500,7 +500,7 @@ void bitbuf_plus( const bitbuf *a, const bitbuf *b, bitbuf *res ) {
 	for( i = BYTE_LEN( lval->len ) - 1; i >= 0; --i ) {
 		sum = lval->buf[i] + rval.buf[i] + carry;
 		res->buf[i] = sum;
-		carry = getbit( sum, 0 );
+		carry = getbit( sum, 8 );
 	}
 	
 	/* Handle the last carry */
