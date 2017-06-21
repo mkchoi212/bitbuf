@@ -93,8 +93,8 @@ void test_addbyte() {
 
 	bitbuf_hex( &b1, str );
 
-	if( assert_str( str, "1123456789ab", "addbyte" ) )
-        success( "addbyte" );
+	assert_str( str, "1123456789ab", "addbyte" );
+    success( "addbyte" );
 	bitbuf_release( &b1 );
 }
 
