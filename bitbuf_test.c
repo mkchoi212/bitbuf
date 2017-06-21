@@ -147,11 +147,10 @@ void test_getbit() {
 		bit = bitbuf_getbit( &bb, i );
         if( !assert_num( res[ i ] - 48, bit, "getbit" ) )
             break;
-	}
-    
-    if( i == bb.len )
-        success( "getbit" );
-	bitbuf_release( &bb );
+	} 
+	assert_num( i, bb.len, "getbit" );
+       	success( "getbit" );
+       	bitbuf_release( &bb );
 }
 
 void test_setbit() {
