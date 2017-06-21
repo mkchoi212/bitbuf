@@ -81,7 +81,7 @@ void test_copy() {
 }
 
 void test_addbyte() {
-	char str[11];
+	char str[14];
 	
 	bitbuf b1 = BITBUF_INIT;
 	bitbuf_init_str( &b1, "0b000100010010" );
@@ -99,7 +99,7 @@ void test_addbyte() {
 }
 
 void test_addbit() {
-	char str[10];
+	char str[5];
 	char binstr[] = "0001001000110100";
 
 	bitbuf bb = BITBUF_INIT;
@@ -117,7 +117,7 @@ void test_addbit() {
 void test_initstr() {
 	char str[20];
 	bitbuf bb = BITBUF_INIT;
-	bitbuf_init_str( &bb, "0xf 0b0001001001001000 0x0deadf" );
+	bitbuf_init_str( &bb, "0xf 0b0001001001001000 0x0deadf 0b" );
 	bitbuf_hex( &bb, str );
 	assert_str( str, "f12480deadf", "initstr" );
 	assert_num( bb.buf[ 0 ], 0xf1, "initstr-1" );
@@ -211,7 +211,7 @@ void test_op() {
 	char str[20];
 	
 	bitbuf res = BITBUF_INIT;
-	bitbuf_init( &res, 50 );
+	bitbuf_init( &res, 10 );
 	
 	bitbuf b1 = BITBUF_INIT;
 	bitbuf_init_str( &b1, "0x12345678" );
@@ -255,14 +255,26 @@ void test_plus() {
 	bitbuf_init( &res, 60 );
 	
 	bitbuf b1 = BITBUF_INIT;
-	bitbuf_init_str( &b1, "0xef2345f" );
 	bitbuf b2 = BITBUF_INIT;
-	bitbuf_init_str( &b2, "0xff4321f" );
-	
-	bitbuf_plus( &b1, &b2, &res );
-	bitbuf_hex( &res, str );
-	
-	assert_str( str, "1ee6667e", "plus" ); 
+    
+    {
+        bitbuf_init_str( &b1, "0xef2345f" );
+        bitbuf_init_str( &b2, "0xff4321f" );
+        bitbuf_plus( &b1, &b2, &res );
+        bitbuf_hex( &res, str );
+        assert_str( str, "1ee6667e", "plus" ); 
+        bitbuf_reset( &b1 );
+        bitbuf_reset( &b2 );
+        bitbuf_reset( &res );
+    }
+    {
+        bitbuf_init_str( &b1, "0x12345" );
+        bitbuf_init_str( &b2, "0xfeedbeef" );
+        bitbuf_plus( &b1, &b2, &res );
+        bitbuf_hex( &res, str );
+        assert_str( str, "feeee234", "plus" ); 
+    }
+
     success( "plus" );
     bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
