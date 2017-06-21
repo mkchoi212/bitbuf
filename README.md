@@ -17,8 +17,9 @@
 bitbuf is a fast C API designed to help make the creation and analysis of binary data as simple and natural as possible.
 
 bitbuf structures can be constructed from integers, strings, or files.
-They can also be sliced, appended, reversed, inserted and so on with simple functions.
-They can also be searched, replaced, read from, and navigated with ease.
+They can be sliced, appended, reversed, inserted and so on with simple functions.
+In addition, they can be searched, replaced, read from, and navigated with ease.
+bitbuf also supports arithematic operations - xor, or, addition and more - which means, you can use it to work with BigNums.
 
 Think of it as C++'s `bitset` on crack, with the size of your entire memory as the only limitation of its size.
 
@@ -174,4 +175,3 @@ One reason you might want to use bitbuf for this purpose - instead of a plain ar
 
 # TODO
 - Implement `bitbuf_prependbuf`
-- Implement `bitbuf_insert`
