@@ -84,16 +84,17 @@ void test_addbyte() {
 	char str[11];
 	
 	bitbuf b1 = BITBUF_INIT;
-	bitbuf_init_str( &b1, "0b00010010" );
+	bitbuf_init_str( &b1, "0b000100010010" );
 	bitbuf_addbyte( &b1, 0x34 );
 	bitbuf_addbyte( &b1, 0x56 );
 	bitbuf_addbyte( &b1, 0x78 );
-	bitbuf_addbyte( &b1, 0x9A );
+    bitbuf_addstr_hex( &b1, "9" );
+	bitbuf_addbyte( &b1, 0xab );
 
 	bitbuf_hex( &b1, str );
 
-	if( assert_str( str, "123456789a", "addbyte" ) )
-        success( "addbyte" );
+	assert_str( str, "1123456789ab", "addbyte" );
+    success( "addbyte" );
 	bitbuf_release( &b1 );
 }
 
@@ -128,8 +129,8 @@ void test_initstr() {
 	
 	bitbuf_init_str( &bb, "0xdeadbeefffeeee" );
 	bitbuf_hex( &bb, str );
-	if( assert_str( str, "deadbeefffeeee", "initstr-4" ) )
-        success( "initstr" );
+	assert_str( str, "deadbeefffeeee", "initstr-4" ); 
+    success( "initstr" );
 
     bitbuf_release( &bb );
 }
@@ -200,8 +201,8 @@ void test_slice() {
 	bitbuf_slice( &slice, &bb, 9, 16 );
 	bitbuf_hex( &slice, str );
 
-	if( assert_str( str, "5b7d", "slice-2" ) )
-        success( "slice" );
+	assert_str( str, "5b7d", "slice-2" ); 
+    success( "slice" );
 	bitbuf_release( &bb );
 	bitbuf_release( &slice );
 }
@@ -252,8 +253,8 @@ void test_plus() {
 	bitbuf_plus( &b1, &b2, &res );
 	bitbuf_hex( &res, str );
 	
-	if( assert_str( str, "1ee6667e", "plus" ) )
-        success( "plus" );
+	assert_str( str, "1ee6667e", "plus" ); 
+    success( "plus" );
     bitbuf_release( &b1 );
 	bitbuf_release( &b2 );
 	bitbuf_release( &res );
