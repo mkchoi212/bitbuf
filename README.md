@@ -17,22 +17,26 @@
 bitbuf is a fast C API designed to help make the creation and analysis of binary data as simple and natural as possible.
 
 bitbuf structures can be constructed from integers, strings, or files.
-They can be sliced, appended, reversed, inserted and so on with simple functions.
-In addition, they can be searched, replaced, read from, and navigated with ease.
-bitbuf also supports arithematic operations - xor, or, addition and more - which means, you can use it to work with BigNums.
+They can also be sliced, appended, reversed, inserted and so on with simple functions.
+They can also be searched, replaced, read from, and navigated with ease.
 
 Think of it as C++'s `bitset` on crack, with the size of your entire memory as the only limitation of its size.
 
 # How bitbuf works
-All operations work under a single struct named `bitbuf`. The struct is composed of three variables; `buf`, `alloc`, and `len`.
 
-`buf` is a pointer to an `unsigned char` array, which holds all the data. 
-`alloc` is a `size_t` variable that indicates how many bits have been allocated for usage behind the scenes.
+bitbuf is designed to be as lightweight as possible and can be considered to be just a list of binary digits. They are however stored efficiently - although there are a variety of ways of creating and viewing the binary data, bitbuf stores the byte data, and all views are calculated as needed.
+
+All operations work under a struct named `bitbuf`. The struct is composed of three variables; `buf`, `alloc`, and `len`.
+
+`buf` is a pointer to an `unsigned char` byte array, which holds all the data. 
+`alloc` is a variable that indicates how many bits have been allocated for usage behind the scenes.
 `len` then shows how much of the allocated space is actually being used to store the data.
 
 # Getting Started
+Typing `make` will generate a static library `libbitbuf.a` in your current directory. You may then move it to a directory of your choice that has been specified by a `LD_LIBRARY_PATH`.
+
 ## Initialization
-First things first. We hvae to know how to create a bitbuf.
+First things first. Here is how you create a bitbuf.
 
 ```c
 bitbuf b = BITBUF_INIT;
@@ -175,3 +179,4 @@ One reason you might want to use bitbuf for this purpose - instead of a plain ar
 
 # TODO
 - Implement `bitbuf_prependbuf`
+- Implement `bitbuf_insert`
