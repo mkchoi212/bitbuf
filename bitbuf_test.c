@@ -221,17 +221,26 @@ void test_op() {
     {	
         bitbuf_xor( &b1, &b2, &res );
         bitbuf_hex( &res, str );
-        if( assert_str( str, "deadbeef", "op-xor" ) )
-            success( "xor" );
+        assert_str( str, "deadbeef", "op-xor" ); 
+        success( "xor" );
         memset( str, '\0', 20 );
         bitbuf_reset( &res );
     }
-    
     {
         bitbuf_or( &b1, &b2, &res );
         bitbuf_hex( &res, str );
-        if( assert_str( str, "debdfeff", "op-or" ) )
-            success( "or" );
+        assert_str( str, "debdfeff", "op-or" ); 
+        success( "or" );
+        memset( str, '\0', 20 );
+        bitbuf_reset( &res );
+    }
+    {
+        bitbuf_and( &b1, &b2, &res );
+        bitbuf_hex( &res, str );
+        assert_str( str, "00104010", "op-and" ); 
+        success( "and" );
+        memset( str, '\0', 20 );
+        bitbuf_reset( &res );
     }
 	
 	bitbuf_release( &b1 );
