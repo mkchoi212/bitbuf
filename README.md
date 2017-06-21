@@ -1,8 +1,18 @@
-# bitbuf
-![Rad Logo](./bitbuf_logo.gif)
+<p align="center">
+    <img src="./bitbuf_logo.gif">
 
-[![Build Status](https://travis-ci.org/mkchoi212/bitbuf.svg?branch=master)](https://travis-ci.org/mkchoi212/bitbuf)
-[![codecov](https://codecov.io/gh/mkchoi212/bitbuf/branch/master/graph/badge.svg)](https://codecov.io/gh/mkchoi212/bitbuf)
+  <h3 align="center">bitbuf</h3>
+
+
+<p align="center">
+    C API for creation and analysis of binary data
+    <br>
+    <br>
+    <a href="https://travis-ci.org/mkchoi212/bitbuf"><img src="https://travis-ci.org/mkchoi212/bitbuf.svg?branch=master"></a>
+    <a href="https://codecov.io/gh/mkchoi212/bitbuf"><img src="https://codecov.io/gh/mkchoi212/bitbuf/branch/master/graph/badge.svg"></a>
+  </p>
+</p>
+<br>
 
 bitbuf is a fast C API designed to help make the creation and analysis of binary data as simple and natural as possible.
 
