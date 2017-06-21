@@ -437,11 +437,11 @@ void bitbuf_align( bitbuf *a, bitbuf *b ) {
 	
 	bitbuf *lg = a->len > b->len ? a : b;
 	bitbuf *sm = a->len > b->len ? b : a;
-	
-	if( sm->alloc < lg->alloc )
-		bitbuf_grow( sm, lg->alloc - sm->alloc );
-	
 	size_t diff = lg->len - sm->len;
+	
+	if( sm->len < lg->len )
+		bitbuf_grow( sm, lg->len - sm->len );
+	
 	bitbuf_setlen( sm, lg->len );
 	bitbuf_rsh( sm, diff );
 }
@@ -482,29 +482,24 @@ void bitbuf_and( const bitbuf *a, const bitbuf *b, bitbuf *res ) {
 
 void bitbuf_plus( const bitbuf *a, const bitbuf *b, bitbuf *res ) {
 	
-	bitbuf *lval = ( bitbuf * )a;
+	bitbuf lval = BITBUF_INIT;
 	bitbuf rval = BITBUF_INIT;
 	
-	if( a->len == b->len ) {
-		rval = *b;
-	} else if( a->len > b->len ) {
-		bitbuf_copy( &rval, b );
-	} else {
-		lval = ( bitbuf * )b;
-		bitbuf_copy( &rval, a );
-	}
-	
-	bitbuf_align( lval, &rval );
+	/* TODO optimize by not copying every time*/	
+	bitbuf_copy( &lval, a );
+	bitbuf_copy( &rval, b );
+	bitbuf_align( &lval, &rval );
+
 	int i, sum, carry;
 	carry = 0;
-	for( i = BYTE_LEN( lval->len ) - 1; i >= 0; --i ) {
-		sum = lval->buf[i] + rval.buf[i] + carry;
+	for( i = BYTE_LEN( lval.len ) - 1; i >= 0; --i ) {
+		sum = lval.buf[i] + rval.buf[i] + carry;
 		res->buf[i] = sum;
 		carry = getbit( sum, 8 );
 	}
 	
 	/* Handle the last carry */
-	res->len = lval->len;
+	res->len = lval.len;
 	if( carry ) {
 		size_t pad = 4 - res->len % 4;
 		bitbuf_grow( res, pad );
@@ -513,9 +508,8 @@ void bitbuf_plus( const bitbuf *a, const bitbuf *b, bitbuf *res ) {
 		bitbuf_setbit( res, pad - 1, 1 );
 	}
 	
-	//TODO MEH check ptr address?
-	if( a->len != b->len )
-		bitbuf_release( &rval );
+	bitbuf_release( &lval );
+	bitbuf_release( &rval );
 }
 
 void bitbuf_addstr( bitbuf *bb, const char *str, size_t base, size_t ulen ) {
