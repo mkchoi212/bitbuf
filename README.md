@@ -8,7 +8,7 @@
     C API for creation and analysis of binary data
     <br>
     <br>
-    <a href="https://travis-ci.org/mkchoi212/bitbuf"><img src="https://travis-ci.org/mkchoi212/bitbuf.svg?branch=master"></a>
+    <img src="https://travis-ci.org/mkchoi212/bitbuf.svg?branch=master">
     <a href="https://codecov.io/gh/mkchoi212/bitbuf"><img src="https://codecov.io/gh/mkchoi212/bitbuf/branch/master/graph/badge.svg"></a>
   </p>
 </p>
@@ -47,12 +47,12 @@ Here, `BITBUF_INIT` is a macro that initializes all variables within the `bitbuf
 
 OK, we've just created a bitbuf structure on the stack. Cool, but how do I initialize it with binary data stored in it?
 
-Well, you have several choices to choose from.
+You have several choices to choose from.
 
 - `init( size_t )` 
     - Initalize an empty buffer
 - `init_zero( size_t )` 
-    - Initialize with n zeros.
+    - Initialize with `n` zeros.
 - `init_file( const char * )`
     - Initialize with contents from a file
 - `init_str( const char * )`
@@ -60,7 +60,13 @@ Well, you have several choices to choose from.
 - `init_sub( bitbuf *src )`
     - Initialize with contents from another buffer
 
-Out of the five methods, the most versatile method to create a bitbuf is with strings. So, I will use that as the main example.
+> Note that these functions allocate additional memory on the "heap" for storage and must be `free()`ed later to prevent memory leakage by calling
+
+```c
+bitbuf_release( &buf );
+```
+
+Out of the five `init` methods, the most versatile method to create a bitbuf is with strings. So, I will use that as the main example.
 
 ```c
 bitbuf b = BITBUF_INIT;
