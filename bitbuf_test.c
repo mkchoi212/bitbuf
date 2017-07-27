@@ -111,6 +111,19 @@ void test_addbit() {
   bitbuf_release(&bb);
 }
 
+void test_insert() {
+  char str[20];
+
+  bitbuf b1 = BITBUF_INIT;
+  bitbuf_init_str(&b1, "0b10101000");
+  bitbuf_insert_bit(&b1, 1, 3);
+  bitbuf_insert_bit(&b1, 1, b1.len);
+  bitbuf_bin(&b1, str);
+  bitbuf_release(&b1);
+  assert_str(str, "1011010001", "insert");
+  success("insert");
+}
+
 void test_initstr() {
   char str[20];
   bitbuf bb = BITBUF_INIT;
@@ -479,6 +492,7 @@ int main() {
   test_copy();
   test_addbyte();
   test_addbit();
+  test_insert();
   test_initstr();
   test_getbit();
   test_setbit();

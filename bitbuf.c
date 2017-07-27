@@ -291,7 +291,7 @@ void bitbuf_addbuf(bitbuf *dest, const bitbuf *src) {
 
   size_t pad, trash;
   pad = dest->len % 8;
-  trash = 8 - pad;
+  trash = min((8 - pad), src->len);
 
   size_t copycnt = src->len;
   bitbuf fresh = BITBUF_INIT;
@@ -510,6 +510,21 @@ void bitbuf_addstr_bin(bitbuf *bb, const char *str) {
   }
 
   bitbuf_addstr(bb, cur, 2, 1);
+}
+
+void bitbuf_insert(bitbuf *dest, const bitbuf *src, size_t idx) {
+  bitbuf tail = BITBUF_INIT;
+  bitbuf_slice(&tail, dest, idx, dest->len - idx);
+  bitbuf_setlen(dest, idx);
+
+  // Clear out dirty bits in the byte where new bits
+  // will be inserted
+  unsigned char *trash = &(dest->buf[idx / 8]);
+  int clr = 8 - (idx % 8);
+  *trash = *trash >> clr << clr;
+
+  bitbuf_addbuf(dest, src);
+  bitbuf_addbuf(dest, &tail);
 }
 
 char *bitbuf_rep(bitbuf *bb) {

@@ -185,4 +185,4 @@ One reason you might want to use bitbuf for this purpose - instead of a plain ar
 
 # TODO
 - Implement `bitbuf_prependbuf`
-- Implement `bitbuf_insert`
+- Implement `bitbuf_init_num`

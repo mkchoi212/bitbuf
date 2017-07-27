@@ -186,6 +186,16 @@ void bitbuf_addstr(bitbuf *, const char *, size_t base, size_t unit);
 void bitbuf_addstr_bin(bitbuf *, const char *);
 void bitbuf_addstr_hex(bitbuf *, const char *);
 
+/* INsert buffer or bit after the specified index */
+void bitbuf_insert(bitbuf *dest, const bitbuf *src, size_t idx);
+static inline void bitbuf_insert_bit(bitbuf *dest, const int bit, size_t idx) {
+  bitbuf src = BITBUF_INIT;
+  bitbuf_init(&src, 1);
+  bitbuf_addbit(&src, bit);
+  bitbuf_insert(dest, &src, idx);
+  bitbuf_release(&src);
+}
+
 /**
  * Operations
  * ______________________________________
