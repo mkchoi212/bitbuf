@@ -13,6 +13,7 @@ TRASH=*.o *.out *.gc*
 all: libbitbuf.a
 
 libbitbuf.a: bitbuf.o
+	make format
 	ar -rcus libbitbuf.a bitbuf.o
 
 test:
@@ -25,6 +26,9 @@ ftest:
 
 valgrind:
 	valgrind --leak-check=full --error-exitcode=42 ./bb_test
+
+format:
+	clang-format -i --style=Google bitbuf.[ch] bitbuf_test.c
 
 bitbuf.o: bitbuf.h bitbuf.c
 	$(CC) $(WARN) $(OP) -fPIC -c bitbuf.c
