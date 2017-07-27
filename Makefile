@@ -18,6 +18,9 @@ libbitbuf.a: bitbuf.o
 test:
 	$(CC) $(WARN) $(DEBUG) $(TST) bitbuf_test.c bitbuf.c -o bb_test
 	./bb_test
+
+ftest:
+	make test
 	make valgrind
 
 valgrind:
