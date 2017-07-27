@@ -196,7 +196,9 @@ static inline void bitbuf_insert_bit(bitbuf *dest, const int bit, size_t idx) {
   bitbuf_release(&src);
 }
 
-/*Append buffer at the beginning of the `dest` buffer*/
+/* Append buffer at the beginning of the `dest` buffer
+ * Equivalent to `bitbuf_insert(dest, src, 0)`
+ */
 void bitbuf_prependbuf(bitbuf *dest, bitbuf *src);
 
 /**
