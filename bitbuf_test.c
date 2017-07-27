@@ -388,6 +388,15 @@ void test_append() {
   bitbuf_hex(&b1, str);
   assert_str(str, "deadcafe", "append");
 
+  bitbuf_reset(&b1);
+  bitbuf_reset(&b2);
+
+  bitbuf_init_str(&b1, "0b110");
+  bitbuf_init_str(&b2, "0b1");
+  bitbuf_addbuf(&b1, &b2);
+  bitbuf_hex(&b1, str);
+  assert_str(str, "d", "append");
+
   bitbuf_release(&b1);
   bitbuf_release(&b2);
 }
