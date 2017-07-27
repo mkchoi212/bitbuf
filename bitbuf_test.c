@@ -124,6 +124,21 @@ void test_insert() {
   success("insert");
 }
 
+void test_prepend() {
+  char str[20];
+
+  bitbuf b1 = BITBUF_INIT;
+  bitbuf b2 = BITBUF_INIT;
+  bitbuf_init_str(&b1, "0xabc 0b1");
+  bitbuf_init_str(&b2, "0xff 0b001");
+
+  bitbuf_prependbuf(&b1, &b2);
+  bitbuf_hex(&b1, str);
+  success("prepend");
+  bitbuf_release(&b1);
+  bitbuf_release(&b2);
+}
+
 void test_initstr() {
   char str[20];
   bitbuf bb = BITBUF_INIT;
@@ -502,6 +517,7 @@ int main() {
   test_addbyte();
   test_addbit();
   test_insert();
+  test_prepend();
   test_initstr();
   test_getbit();
   test_setbit();

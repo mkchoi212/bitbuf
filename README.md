@@ -184,5 +184,4 @@ bitbuf_release( &buf );
 One reason you might want to use bitbuf for this purpose - instead of a plain array - is that the million bits only take up million bits in memory, whereas an array of integers would take up much more space. Try making an array with billion integers - it will fail unless you’ve got some really nice hardware. A billion element bitbuf is only **125MB** big.
 
 # TODO
-- Implement `bitbuf_prependbuf`
 - Implement `bitbuf_init_num`

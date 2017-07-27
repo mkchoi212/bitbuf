@@ -525,6 +525,17 @@ void bitbuf_insert(bitbuf *dest, const bitbuf *src, size_t idx) {
 
   bitbuf_addbuf(dest, src);
   bitbuf_addbuf(dest, &tail);
+  bitbuf_release(&tail);
+}
+
+void bitbuf_prependbuf(bitbuf *dest, bitbuf *src) {
+  unsigned char destHead = dest->buf[0] >> (src->len % 8);
+
+  bitbuf_setlen(dest, dest->len + src->len);
+  bitbuf_rsh(dest, src->len);
+
+  memcpy(dest->buf, src->buf, BYTE_LEN(src->len));
+  dest->buf[src->len / 8] |= destHead;
 }
 
 char *bitbuf_rep(bitbuf *bb) {
