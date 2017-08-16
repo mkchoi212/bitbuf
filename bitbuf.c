@@ -626,8 +626,8 @@ void bitbuf_ascii(const bitbuf *bb, char *str) {
   str[BYTE_LEN(bb->len)] = '\0';
 }
 
-unsigned long bitbuf_num(const bitbuf *bb) {
-  unsigned long num = 0;
+BIG_UNUM bitbuf_num(const bitbuf *bb) {
+  BIG_UNUM num = 0;
   if (bb->len > sizeof(num) * 8)
     die("num: Buffer too larger to conver to number");
 
@@ -638,7 +638,7 @@ unsigned long bitbuf_num(const bitbuf *bb) {
   }
 
   /* Handle remaining bits */
-  size_t rem = bb->len % 8;
+  size_t rem = bb->len % 8 ? bb->len % 8 : 8;
   num <<= rem;
   num += bb->buf[i] >> (8 - rem);
   return num;

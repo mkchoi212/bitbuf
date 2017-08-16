@@ -497,13 +497,18 @@ void test_align() {
 
 void test_num() {
   bitbuf b1 = BITBUF_INIT;
-  bitbuf_init_str(&b1, "0xdead 0b110");
-  assert_num(456046, bitbuf_num(&b1), "num-1");
+  bitbuf_init_str(&b1, "0xdeadbeef");
+  BIG_UNUM res = bitbuf_num(&b1);
+  BIG_UNUM expected = 3735928559;
+
+  if (res != expected) {
+    fprintf(stderr, "FAILED\n\t\tExpected %llu\t\t got %llu\n", expected, res);
+    exit(EXIT_FAILURE);
+  }
 
   bitbuf b2 = BITBUF_INIT;
-  bitbuf_init_sub(&b2, &b1, 16, 3);
-  assert_num(6, bitbuf_num(&b2), "num-2");
-
+  bitbuf_init_sub(&b2, &b1, 16, 5);
+  assert_num(23, bitbuf_num(&b2), "num-2");
   success("num");
   bitbuf_release(&b1);
   bitbuf_release(&b2);

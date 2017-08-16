@@ -25,6 +25,9 @@ extern unsigned char bitbuf_slopbuf[];
 /* Buffer size when `fread`ing  */
 #define MAX_BUF 4096
 
+/* biggest type supported by `bitbuf_num` */
+typedef unsigned long long BIG_UNUM;
+
 /* popcount support for Visual Studio */
 #ifdef __MSC_VER
 #include <intrin.h>
@@ -249,11 +252,11 @@ void bitbuf_ascii(const bitbuf *, char *);
  */
 char *bitbuf_rep(bitbuf *);
 
-/* TODO REFER TO INT_MAX
- * Numeric representation of the buffer
- * Maximum number supported is 4 bytes or 4,294,967,295
+/* Numeric representation of the buffer
+ * Maximum number supported is BIG_UNUM which is `unsigned long long int`
+ * which can hold 8 bytes; any number from 0 to 2 ^ 64
  */
-unsigned long bitbuf_num(const bitbuf *);
+BIG_UNUM bitbuf_num(const bitbuf *);
 
 /**
  * I / O
